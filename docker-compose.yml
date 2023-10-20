@@ -30,17 +30,37 @@ services:
     # db mysql
     db:
         image: mysql:latest
-        platform: linux/x86_64
-        restart: unless-stopped
+        # platform: linux/x86_64
+        restart: always
         environment:
-            MYSQL_DATABASE: ${DB_DATABASE:-laravel}
-            MYSQL_ROOT_PASSWORD: ${DB_PASSWORD:-root}
-            MYSQL_PASSWORD: ${DB_PASSWORD:-userpass}
-            MYSQL_USER: ${DB_USERNAME:-username}
+            # MYSQL_DATABASE: ${DB_DATABASE:-laravel}
+            # MYSQL_ROOT_PASSWORD: ${DB_PASSWORD:-root}
+            # MYSQL_PASSWORD: ${DB_PASSWORD:-userpass}
+            # MYSQL_USER: ${DB_USERNAME:-username}
+            MYSQL_DATABASE: ${DB_DATABASE}
+            MYSQL_ROOT_PASSWORD: ${DB_PASSWORD}
+            MYSQL_PASSWORD: ${DB_PASSWORD}
+            MYSQL_USER: ${DB_USERNAME}
         volumes:
             - ./.docker/mysql/dbdata:/var/lib/mysql
         ports:
-            - "3388:3306"
+            - "3306:3306"
+        networks:
+            - laravel
+        
+    #phpmyadmin
+    phpmyadmin:     # imagem que faz conexão php com sql, sem precisar de um programa sql externo
+        image: phpmyadmin/phpmyadmin
+        container_name: phpmyadmin
+        restart: always
+        environment:
+            - PMA_ARBITRARY=1
+        ports:
+            - 8090:80
+        volumes:
+            - /sessions
+            - ~/docker/phpmyadmin/config.user.inc.php:/etc/phpmyadmin/config.user.inc.php
+            - /custom/phpmyadmin/theme/:/www/themes/theme/
         networks:
             - laravel
 
@@ -63,19 +83,7 @@ services:
         networks:
             - laravel
 
-    #phpmyadmin
-    phpmyadmin:     # imagem que faz conexão php com sql, sem precisar de um programa sql externo
-        image: phpmyadmin/phpmyadmin
-        container_name: phpmyadmin
-        environment:
-            - PMA_ARBITRARY=1
-        restart: always
-        ports:
-            - 8090:80
-        volumes:
-            - /sessions
-            - ~/docker/phpmyadmin/config.user.inc.php:/etc/phpmyadmin/config.user.inc.php
-            - /custom/phpmyadmin/theme/:/www/themes/theme/
+
 
 networks:
     laravel:
