@@ -7,6 +7,6 @@ class MySqlGrammar extends \Illuminate\Database\Query\Grammars\MySqlGrammar
 {
     public function getDateFormat()
     {
-        return 'd-m-Y H:i:s.u';
+        return 'd/m/Y H:i:s.u';
     }
 }
