@@ -14,9 +14,12 @@ return new class extends Migration
     {
         //calendario usando Carbon
         Schema::create('calendario', function (Blueprint $table) {
+            
+            $table->id();
             $table->timestamp('data');
             $table->integer('status');
-            
+            $table->timestamp('criado_em');
+            $table->timestamp('modificado_em');
             });
     }
 
