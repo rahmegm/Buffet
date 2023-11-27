@@ -27,3 +27,7 @@ Route::get('/contact', function () {
 });
 
 Route::get('/dashboard',[BirthdayController::class, 'dashboard'])->middleware('auth');
+
+Route::post('/birthdays/join/{id}', [BirthdayController::class, 'joinBirthday'])->middleware('auth');
+
+Route::delete('/birthdays/leave/{id}', [BirthdayController::class, 'leaveBirthday'])->middleware('auth');

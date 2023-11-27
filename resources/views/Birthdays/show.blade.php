@@ -12,6 +12,7 @@
                 <p class="birthdays-guests"><ion-icon name="people-outline"></ion-icon>X participantes</p>
                 <p class="event-owner"><ion-icon name="star-outline"></ion-icon>{{$eventOwner['name']}}</p>
                 <a href="#" class="btn btn-primary" id="event-submit">Confirmar Presença</a>
+                
                 <h3>O aniversario conta com:</h3>
                 <ul id="items-list">
                     @foreach($birthday->items as $item)

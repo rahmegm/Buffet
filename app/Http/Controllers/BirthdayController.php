@@ -50,18 +50,37 @@ class BirthdayController extends Controller
     }
 
     public function show($id){
+
         $birthday = Birthday::findOrFail($id);
+
+        $user = auth()->user();
+        $hasUserJoined = false;
+
+        if($user) {
+            $userBirthdays = $user->birthdayAsParticipant->toArray();
+
+            foreach($userBirthdays as $userBirthday){
+                if($userBirthday['id'] == $id){
+                    $hasUserJoined = true;
+                }
+            }
+        }
 
         $birthdayOwner = User::where('id',$birthday->user_id)->first()->toArray();
 
-        return view('birthdays.show', ['birthday' => $birthday, 'birthdayOwner'=>$birthdayOwner]);
+        return view('birthdays.show', ['birthday' => $birthday, 'birthdayOwner'=>$birthdayOwner, 'hasUserJoined' => $hasUserJoined]);
+
     }
 
     public function dashboard() {
+
         $user =auth()->user();
+
         $birthdays = $user->birthdays;
 
-        return view('birthdays.dashboard', ['birthdays' => $birthdays]);
+        $birthdaysAsParticipant = $user->birthdaysAsParticipant;
+
+        return view('birthdays.dashboard', ['birthdays' => $birthdays , 'birthdaysasparticipant' => $birthdaysasparticipant]);
     }
 
     public function destroy($id){
@@ -73,7 +92,14 @@ class BirthdayController extends Controller
 
     public function edit($id){
 
+        $user = auth()->user();
+
         $birthday = Birthday::findOrFail($id);
+
+        if($user->id != $birthday->user->id){
+
+            return redirect('/dashboard');
+        }
 
         return view('birthdays.edit',['birthday' => $edit]);
     }
@@ -96,6 +122,18 @@ class BirthdayController extends Controller
         $birthday = Birthday::findOrFail($id);
 
         return redirect('/dashboard')->with('msg','Sua presença está confirmada no aniversario: ' . $birthday->title);
+
+    }
+
+    public function leaveEvent($id){
+
+        $user = auth()->user();
+
+        $user->birthdaysAsParticipant()->detach($id);
+
+        $birthday = Birthday::findOrFail($id);
+        
+        return redirect('/dashboard')->with('msg','Voce desmarcou sua presençano aniversario: ' . $birthday->title);
 
     }
 
