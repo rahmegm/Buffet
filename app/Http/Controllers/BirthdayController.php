@@ -71,4 +71,20 @@ class BirthdayController extends Controller
         return redirect('/dashboard')->with('msg', 'Aniversario excluido com sucesso!');
     }
 
+    public function edit($id){
+
+        $birthday = Birthday::findOrFail($id);
+
+        return view('birthdays.edit',['birthday' => $edit]);
+    }
+
+    public function update(Request $request) {
+
+        $data = $request->all();
+
+        Birthday::findOrFail($request->id)->update($data);
+
+        return redirect('/dashboard')->with('msg', 'Aniversario editado com sucesso!');       
+    }
+
 }

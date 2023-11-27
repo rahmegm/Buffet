@@ -18,12 +18,12 @@ Route::get('/', [BirthdayController::class, 'index']);
 Route::get('/birthdays/create', [BirthdayController::class, 'create'])->middleware('auth');
 Route::get('/birthdays/{id}', [BirthdayController::class, 'show']);
 Route::post('/birthdays', [BirthdayController::class, 'store']);
-Route::delete('/birthdays/{id}', [BirthdayController::class, 'destroy']);
+Route::delete('/birthdays/{id}', [BirthdayController::class, 'destroy'])->middleware('auth');
+Route::get('/birthdays/edit/{id}', [BirthdayController::class, 'edit'])->middleware('auth');
+Route::put('/birthdays/update/{id}', [BirthdayController::class, 'update'])->middleware('auth');
 
 Route::get('/contact', function () {
     return view('contact');
 });
 
 Route::get('/dashboard',[BirthdayController::class, 'dashboard'])->middleware('auth');
-
-
