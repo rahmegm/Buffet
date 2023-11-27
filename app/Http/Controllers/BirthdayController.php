@@ -84,7 +84,19 @@ class BirthdayController extends Controller
 
         Birthday::findOrFail($request->id)->update($data);
 
-        return redirect('/dashboard')->with('msg', 'Aniversario editado com sucesso!');       
+        return redirect('/dashboard')->with('msg', 'Aniversario editado com sucesso!');
+    }
+
+    public function joinEvent($id){
+
+        $user = auth()->user();
+
+        $user->birthdaysAsParticipant()->attach($id);
+
+        $birthday = Birthday::findOrFail($id);
+
+        return redirect('/dashboard')->with('msg','Sua presença está confirmada no aniversario: ' . $birthday->title);
+
     }
 
 }
