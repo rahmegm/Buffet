@@ -1,19 +1,14 @@
-# Curso GRATUITO de Laravel 10.x
 
-- :movie_camera: [Acesse o Curso](https://academy.especializati.com.br/curso/laravel-10-gratuito).
+# Setup Docker Laravel 10 com PHP 8.1
+[Assine a Academy, e Seja VIP!](https://academy.especializati.com.br)
 
-
-Links Úteis:
-
-- :tada: [Saiba Mais](https://linktr.ee/especializati)
-
-## Passo a passo para rodar o projeto
-Clone o projeto
+### Passo a passo
+Clone Repositório
 ```sh
-git clone https://github.com/especializati/curso-de-laravel-10.git laravel-10
+git clone -b laravel-10-com-php-8.1 https://github.com/especializati/setup-docker-laravel.git app-laravel
 ```
 ```sh
-cd laravel-10/
+cd app-laravel
 ```
 
 
@@ -23,13 +18,13 @@ cp .env.example .env
 ```
 
 
-Atualize essas variáveis de ambiente no arquivo .env
+Atualize as variáveis de ambiente do arquivo .env
 ```dosini
-APP_NAME="Especializa Ti"
+APP_NAME=EspecializaTi
 APP_URL=http://localhost:8989
 
 DB_CONNECTION=mysql
-DB_HOST=mysql
+DB_HOST=db
 DB_PORT=3306
 DB_DATABASE=nome_que_desejar_db
 DB_USERNAME=nome_usuario
@@ -51,7 +46,7 @@ docker-compose up -d
 ```
 
 
-Acesse o container
+Acesse o container app
 ```sh
 docker-compose exec app bash
 ```

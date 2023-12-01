@@ -20,7 +20,7 @@ services:
         image: nginx:alpine
         restart: unless-stopped
         ports:
-            - "8989:80"
+            - "8089:80"
         volumes:
             - ./:/var/www
             - ./docker/nginx/:/etc/nginx/conf.d/
@@ -30,15 +30,13 @@ services:
     # db mysql
     db:
         image: mysql:latest
-        platform: linux/x86_64
         restart: unless-stopped
         environment:
             MYSQL_DATABASE: ${DB_DATABASE:-laravel}
             MYSQL_ROOT_PASSWORD: ${DB_PASSWORD:-root}
             MYSQL_PASSWORD: ${DB_PASSWORD:-userpass}
-            MYSQL_USER: ${DB_USERNAME:-username}
-        volumes:
-            - ./.docker/mysql/dbdata:/var/lib/mysql
+            MYSQL_USER: ${DB_USERNAME:-laravelDC}
+
         ports:
             - "3388:3306"
         networks:
@@ -57,25 +55,27 @@ services:
         networks:
             - laravel
 
-    # redis
-    redis:
-        image: redis:latest
-        networks:
-            - laravel
-
-    #phpmyadmin
+     #phpmyadmin
     phpmyadmin:     # imagem que faz conexão php com sql, sem precisar de um programa sql externo
         image: phpmyadmin/phpmyadmin
         container_name: phpmyadmin
+        restart: always
         environment:
             - PMA_ARBITRARY=1
-        restart: always
         ports:
             - 8090:80
         volumes:
             - /sessions
             - ~/docker/phpmyadmin/config.user.inc.php:/etc/phpmyadmin/config.user.inc.php
             - /custom/phpmyadmin/theme/:/www/themes/theme/
+        networks:
+            - laravel
+
+    # redis
+    redis:
+        image: redis:latest
+        networks:
+            - laravel
 
 networks:
     laravel:
